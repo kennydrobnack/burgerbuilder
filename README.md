@@ -1,3 +1,5 @@
+This project is following along with the Burget Builder app on the Udemy React course available here: https://www.udemy.com/react-the-complete-guide-incl-redux
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
