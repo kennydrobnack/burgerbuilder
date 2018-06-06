@@ -97,7 +97,7 @@ class ContactData extends Component {
                     <Input inputtype="input" type="text" name="street" placeholder="Your Street Address" />
                     <Input inputtype="input" type="text" name="postal" placeholder="postal code" /> */}
                     {formElementsArray.map(formElement => (
-                        <Input key={formElement.id} elementType={formElement.elementType} elementConfig={formElement.elementConfig} value={formElement.value}/>   
+                        <Input key={formElement.id} elementType={formElement.config.elementType} elementConfig={formElement.config.elementConfig} value={formElement.config.value}/> 
                     ))}
                     <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
                 </form>
