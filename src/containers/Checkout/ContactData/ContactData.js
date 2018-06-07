@@ -27,7 +27,7 @@ class ContactData extends Component {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: 'Your Name'
+                    placeholder: 'Your Street Address'
                 },
                 value: ''
             },
@@ -55,19 +55,15 @@ class ContactData extends Component {
     orderHandler = (event) => {
         event.preventDefault()
         this.setState({ loading: true })
+        const formData = { }
+        for (let formElementIdentifier in this.state.orderForm) {
+            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value
+        }
         const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Kenny',
-                address: {
-                    street: 'Main Street',
-                    zipCode: '12345',
-                    country: 'USA'
-                },
-                email: 'kenny@thisdomaindoesnotexist.com'
-            },
-            deliverymethod: 'fastest'
+            ingredients: this.props.ingredients,
+            price: this.props.totalPrice,
+            orderData: formData,
+            orderPlaced: new Date()
         }
         axios.post('/orders.json', order)
             .then(response => {
@@ -103,7 +99,7 @@ class ContactData extends Component {
         return (
             <div className={classes.ContactData}>
                 <h4>Enter your contact data</h4>
-                <form>
+                <form onSubmit={this.orderHandler}>
                     {/* <Input elementType="..." elementConfig="..." value="..."/>
                     <Input inputtype="input" type="email" name="email" placeholder="your@email.com" />
                     <Input inputtype="input" type="text" name="street" placeholder="Your Street Address" />
@@ -115,7 +111,7 @@ class ContactData extends Component {
                             value={formElement.config.value}
                             changed={(event) => this.inputChangedHandler(event, formElement.id)}/> 
                     ))}
-                    <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
+                    <Button btnType="Success">ORDER</Button>
                 </form>
             </div>
         )
