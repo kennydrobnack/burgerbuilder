@@ -4,8 +4,8 @@ import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
-import axios from '../../axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
+import axios from '../../axios-orders'
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 import { connect } from 'react-redux'
 import * as burgerbuilderActions from '../../store/actions' 
@@ -13,18 +13,10 @@ import * as burgerbuilderActions from '../../store/actions'
 class BurgerBuilder extends Component {
     state = {
         purchasing: false,
-        loading: false,
-        error: false
     }
 
     componentDidMount() {
-        // axios.get('/ingredients.json')
-        //     .then(response => {
-        //         this.setState({ ingredients: response.data })
-        //     })
-        //     .catch(error =>
-        //         this.setState({ error: true })
-        //     )
+        this.props.onInitIngredients()
     }
 
     updatePurchaseableState(ingredients) {
@@ -57,10 +49,10 @@ class BurgerBuilder extends Component {
         }
         let orderSummary = null
 
-        if (this.state.loading) {
+        if (this.props.loading) {
             orderSummary = <Spinner />
         }
-        let burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />
+        let burger = this.props.error ? <p>Ingredients can't be loaded</p> : <Spinner />
         if (this.props.ings) {
             burger = (
                 <Aux>
@@ -96,14 +88,16 @@ class BurgerBuilder extends Component {
 const mapStateToProps = state => {
     return {
         ings: state.ingredients,
-        totalPrice: state.totalPrice
+        totalPrice: state.totalPrice,
+        error: state.error
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onIngredientAdded: (ingName) => dispatch(burgerbuilderActions.addIngredient(ingName)),
-        onIngredientRemoved: (ingName) => dispatch(burgerbuilderActions.removeIngredient(ingName))
+        onIngredientRemoved: (ingName) => dispatch(burgerbuilderActions.removeIngredient(ingName)),
+        onInitIngredients: () => dispatch(burgerbuilderActions.initIngredients())
     }
 }
 
